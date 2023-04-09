@@ -28,20 +28,20 @@ router.post('/', async (request, response) => {
     }
 })
 
-router.get('/person', async (req, res) => {
+router.get('/', async (request, response) => {
     try {
         const people = await Person.find()
 
-        res.status(200).json(people)
+        response.status(200).json(people)
     } catch (error) {
-        res.status(500).json({
+        response.status(500).json({
             erro: error
         })
     }
 })
 
-router.get('/person/:id', async (req, res) => {
-    const id = req.params.id
+router.get('/:id', async (request, response) => {
+    const id = request.params.id
 
     try {
         const person = await Person.findOne({
@@ -49,28 +49,28 @@ router.get('/person/:id', async (req, res) => {
         })
 
         if (!person) {
-            res.status(422).json({
+            response.status(422).json({
                 message: 'Usuário não encontrado!'
             })
             return
         }
 
-        res.status(200).json(person)
+        response.status(200).json(person)
     } catch (error) {
-        res.status(500).json({
+        response.status(500).json({
             erro: error
         })
     }
 })
 
-router.patch('/person/:id', async (req, res) => {
-    const id = req.params.id
+router.patch('/:id', async (request, response) => {
+    const id = request.params.id
 
     const {
         name,
         salary,
         approved
-    } = req.body
+    } = request.body
 
     const person = {
         name,
@@ -84,29 +84,29 @@ router.patch('/person/:id', async (req, res) => {
         }, person)
 
         if (updatedPerson.matchedCount === 0) {
-            res.status(422).json({
+            response.status(422).json({
                 message: 'Usuário não encontrado!'
             })
             return
         }
 
-        res.status(200).json(person)
+        response.status(200).json(person)
     } catch (error) {
-        res.status(500).json({
+        response.status(500).json({
             erro: error
         })
     }
 })
 
-router.delete('/person/:id', async (req, res) => {
-    const id = req.params.id
+router.delete('/:id', async (request, response) => {
+    const id = request.params.id
 
     const person = await Person.findOne({
         _id: id
     })
 
     if (!person) {
-        res.status(422).json({
+        response.status(422).json({
             message: 'Usuário não encontrado!'
         })
         return
@@ -117,11 +117,11 @@ router.delete('/person/:id', async (req, res) => {
             _id: id
         })
 
-        res.status(200).json({
+        response.status(200).json({
             message: 'Usuário removido com sucesso!'
         })
     } catch (error) {
-        res.status(500).json({
+        response.status(500).json({
             erro: error
         })
     }
